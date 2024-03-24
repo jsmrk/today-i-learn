@@ -18,6 +18,7 @@
       href="https://fonts.googleapis.com/css2?family=Sono:wght@200..800&display=swap"
       rel="stylesheet"
     />
+    <script async src="app.js"></script>
 
     <title>Today I learned</title>
   </head>
@@ -29,10 +30,10 @@
           <h1>Today I Learned</h1>
         </div>
 
-        <button class="btn btn-large">Share a fact</button>
+        <button class="btn btn-large btn-open">Share a fact</button>
       </header>
 
-      <form class="fact-form" action="">
+      <form class="fact-form hidden" action="">
         <input type="text" placeholder="Share a Fact with the world..." />
         <span>200</span>
         <input type="text" placeholder="Trustworthy Spurse..." />
@@ -69,7 +70,7 @@
         </aside>
 
         <section>
-          <ul>
+          <ul class="facts-list">
             <li class="fact">
               <p>
                 React is being developed by Meta (formerly facebook)

@@ -40,6 +40,10 @@ body {
   max-width: 68px;
 }
 
+.hidden {
+  display: none !important;
+}
+
 .fact-form {
   background-color: #44403c;
   margin-bottom: 40px;
@@ -159,17 +163,8 @@ ul {
   text-transform: uppercase;
   font-size: 17px;
   padding: 16px 0 13px;
-  background-image: linear-gradient(
-    135deg,
-    #3b82f6,
-    #16a34a,
-    #ef4444,
-    #eab308,
-    #db2777,
-    #14b8a6,
-    #f97316,
-    #8b5cf6
-  );
+  background-image: linear-gradient(135deg, #3b82f6, #16a34a, #ef4444, #eab308);
+
   color: #fafaf9;
   transition: all 0.5s;
   border-radius: 30px;
