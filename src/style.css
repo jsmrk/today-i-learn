@@ -11,7 +11,7 @@ body {
   padding: 40px;
 }
 
-.container {
+#root {
   max-width: 1444px;
   margin: 0 auto;
 }
