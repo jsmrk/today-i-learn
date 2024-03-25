@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import supabase from "./supabase";
+
 import "./style.css";
 
 const initialFacts = [
@@ -37,19 +39,44 @@ const initialFacts = [
 
 function App() {
   const [showForm, setShowForm] = useState(false);
+  const [facts, setFacts] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(function () {
+    async function getFacts() {
+      setIsLoading(true);
+      const { data: facts, error } = await supabase
+        .from("facts")
+        .select("*")
+        .order("created_at", { ascending: true });
+      // .limit(1000)
+      // console.log(error);
+      if (!error) setFacts(facts);
+      else alert("There was a problem getting data");
+
+      setIsLoading(false);
+    }
+    getFacts();
+  }, []);
 
   return (
     <>
       <Header showForm={showForm} setShowForm={setShowForm} />
 
-      {showForm ? <NewFactForm /> : null}
+      {showForm ? (
+        <NewFactForm setFacts={setFacts} setShowForm={setShowForm} />
+      ) : null}
 
       <main className="main">
         <CategoryFilter />
-        <FactList />
+        {isLoading ? <Loader /> : <FactList facts={facts} />}
       </main>
     </>
   );
+}
+
+function Loader() {
+  return <p className="loading">Loading...</p>;
 }
 
 function Header({ showForm, setShowForm }) {
@@ -70,10 +97,6 @@ function Header({ showForm, setShowForm }) {
   );
 }
 
-function NewFactForm() {
-  return <form className="fact-form">Fact Form</form>;
-}
-
 const CATEGORIES = [
   { name: "technology", color: "#3b82f6" },
   { name: "science", color: "#16a34a" },
@@ -84,6 +107,81 @@ const CATEGORIES = [
   { name: "history", color: "#f97316" },
   { name: "news", color: "#8b5cf6" },
 ];
+
+function isValidHttpUrl(String) {
+  let url;
+  try {
+    url = new URL(String);
+  } catch (_) {
+    return false;
+  }
+  return url.protocol === "https:" || url.protocol === "https";
+}
+
+function NewFactForm({ setFacts, setShowForm }) {
+  const [text, setText] = useState("");
+  const [source, setSource] = useState("https://www.facebook.com/");
+  const [category, setCategory] = useState("");
+  const textLength = text.length;
+
+  function handleSubmit(e) {
+    //1. This is to prevent the browser to reload
+    e.preventDefault();
+
+    //2. Check if data is valid, then create a new fact
+    if (text && isValidHttpUrl(source) && category && textLength <= 200) {
+      //3. Create a new fact object
+      const newFact = {
+        id: Math.round(Math.random() * 1000),
+        text,
+        source,
+        category,
+        votesInteresting: 24,
+        votesMindblowing: 9,
+        votesFalse: 4,
+        createdIn: new Date().getFullYear(),
+      };
+
+      //4. Add the new fact to the UI, and to the state
+      setFacts((facts) => [newFact, ...facts]);
+    }
+    //5. Reset input fields
+    setText("");
+    setSource("");
+    setCategory("");
+
+    //6. Close the form
+    setShowForm(false);
+  }
+
+  return (
+    <form className="fact-form" onSubmit={handleSubmit}>
+      <input
+        type="text"
+        placeholder="Share a Fact with the world..."
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+      />
+      <span>{200 - textLength}</span>
+      <input
+        type="text"
+        placeholder="Trustworthy Spurse..."
+        value={source}
+        onChange={(e) => setSource(e.target.value)}
+      />
+      <select value={category} onChange={(e) => setCategory(e.target.value)}>
+        <option value="">Choose Category</option>
+        {CATEGORIES.map((category) => (
+          <option key={category.name} value={category.name}>
+            {category.name.toUpperCase()}
+          </option>
+        ))}
+        <option value="technology">Technology</option>
+      </select>
+      <button className="btn btn-large">Post</button>
+    </form>
+  );
+}
 
 function CategoryFilter() {
   return (
@@ -105,9 +203,7 @@ function CategoryFilter() {
   );
 }
 
-function FactList() {
-  const facts = initialFacts;
-
+function FactList({ facts }) {
   return (
     <section>
       <ul className="facts-list">
