@@ -143,6 +143,12 @@ ul {
   list-style: none;
 }
 
+.date-posted {
+  color: #a8a29e;
+  margin-bottom: 15px;
+  font-size: 15px;
+}
+
 .source:link,
 .source:visited {
   color: #a8a29e;

@@ -69,32 +69,66 @@ loadFacts();
 
 // DISPLAYING FACTS LIST FROM DB
 const factsList = document.querySelector(".facts-list");
+// to format date
 // code to empty facts list
 factsList.innerHTML = "";
 
 function createdFactsList(dataArray) {
-  const htmlArr = dataArray.map(
-    (fact) => `<li class="fact">${fact.text}<p>
-                <a
-                  class="source"
-                  href="${fact.source}"
-                  >(Source)
-                </a>
-              </p>
+  // to sort array based on the date posted
+  const sortedDataArray = dataArray.sort(
+    (a, b) => new Date(b.created_at) - new Date(a.created_at)
+  );
+
+  const formattedHtmlArr = sortedDataArray.map((fact) => {
+    const formattedDate = formatDate(fact.created_at);
+    return `<li class="fact">
+              <div class="fact-details">
+                <p class="date-posted">${formattedDate}</p>
+                <p>${fact.text}
+                  <a class="source" href="${fact.source}">(Source)</a>
+                </p>
+              </div>
               <span class="tag" style="background-color: ${
                 CATEGORIES.find((category) => category.name === fact.category)
                   .color
-              }"
-                >${fact.category}
-              </span>
+              }">${fact.category}</span>
               <div class="vote-buttons">
-                <button>👍 <strong>${fact.votesInteresting}</strong></button>
-                <button>🤯 <strong>${fact.votesMindblowing}</strong></button>
+                <button> <strong>${fact.votesInteresting}</strong></button>
+                <button> <strong>${fact.votesMindblowing}</strong></button>
                 <button>⛔️ <strong>${fact.votesFalse}</strong></button>
               </div>
-              </li>`
-  );
-  const html = htmlArr.join("");
+            </li>`;
+  });
+
+  const html = formattedHtmlArr.join("");
   factsList.insertAdjacentHTML("afterbegin", html);
+}
+
+// TO FORMAT DATE
+// This function can handle either UTC (ISO 8601) or timestamp formats (replace with yours)
+function formatDate(dateString) {
+  if (typeof dateString === "string" && dateString.includes("T")) {
+    // Assuming UTC format
+    const dateObj = new Date(dateString);
+    const options = {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "numeric",
+      minute: "2-digit", // Use 'minute' for leading zeros, '2-digit' for optional leading zero
+    };
+    return dateObj.toLocaleDateString("en-US", options);
+  } else {
+    // Assuming timestamp format
+    const dateObj = new Date(parseInt(dateString));
+    const options = {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "numeric",
+      minute: "2-digit",
+    };
+    return dateObj.toLocaleDateString("en-US", options);
+  }
 }
 // **********************************************
