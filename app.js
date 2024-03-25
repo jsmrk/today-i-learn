@@ -24,6 +24,27 @@ const CATEGORIES = [
   { name: "news", color: "#8b5cf6" },
 ];
 
+// DISPLAY SIDEBARD BUTTONS OF CATEGORIES
+const categories = document.querySelector(".categories");
+categories.innerHTML = "";
+
+function createCategoriesList(CATEGORIES) {
+  const htmlArr = CATEGORIES.map(
+    (CATEGORIES) => `<li class="category">
+              <button
+                class="btn btn-category"
+                style="background-color: ${CATEGORIES.color}"
+              >
+                ${CATEGORIES.name}
+              </button>
+            </li>`
+  );
+  const html = htmlArr.join("");
+  categories.insertAdjacentHTML("afterbegin", html);
+}
+createCategoriesList(CATEGORIES);
+// **********************************************
+
 // LOAD DATA FROM DB
 async function loadFacts() {
   const res = await fetch(
@@ -60,7 +81,10 @@ function createdFactsList(dataArray) {
                   >(Source)
                 </a>
               </p>
-              <span class="tag" style="background-color: #3b82f6"
+              <span class="tag" style="background-color: ${
+                CATEGORIES.find((category) => category.name === fact.category)
+                  .color
+              }"
                 >${fact.category}
               </span>
               <div class="vote-buttons">
@@ -73,5 +97,4 @@ function createdFactsList(dataArray) {
   const html = htmlArr.join("");
   factsList.insertAdjacentHTML("afterbegin", html);
 }
-
 // **********************************************
