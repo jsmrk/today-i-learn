@@ -40,20 +40,7 @@ function App() {
 
   return (
     <>
-      {/* HEADER */}
-      <header className="header">
-        <div className="logo">
-          <img src="/logo.png" alt="Today I learned logo" />
-          <h1>Today I Learned</h1>
-        </div>
-
-        <button
-          className="btn btn-large btn-open"
-          onClick={() => setShowForm((show) => !show)}
-        >
-          Share a fact
-        </button>
-      </header>
+      <Header showForm={showForm} setShowForm={setShowForm} />
 
       {showForm ? <NewFactForm /> : null}
 
@@ -62,6 +49,24 @@ function App() {
         <FactList />
       </main>
     </>
+  );
+}
+
+function Header({ showForm, setShowForm }) {
+  return (
+    <header className="header">
+      <div className="logo">
+        <img src="/logo.png" alt="Today I learned logo" />
+        <h1>Today I Learned</h1>
+      </div>
+
+      <button
+        className="btn btn-large btn-open"
+        onClick={() => setShowForm((show) => !show)}
+      >
+        {showForm ? "Close" : " Share a fact"}
+      </button>
+    </header>
   );
 }
 
