@@ -133,7 +133,7 @@ function isValidHttpUrl(String) {
 
 function NewFactForm({ setFacts, setShowForm }) {
   const [text, setText] = useState("");
-  const [source, setSource] = useState("https://www.facebook.com/");
+  const [source, setSource] = useState("");
   const [category, setCategory] = useState("");
   const [isUploading, setIsUploading] = useState(false);
   const textLength = text.length;
@@ -248,7 +248,7 @@ function FactList({ facts, setFacts }) {
     );
   } else
     return (
-      <section>
+      <section className="fact-section">
         <ul className="facts-list">
           {facts.map((fact) => (
             <Fact key={fact.id} fact={fact} setFacts={setFacts} />
@@ -261,6 +261,8 @@ function FactList({ facts, setFacts }) {
 
 function Fact({ fact, setFacts }) {
   const [isUpdating, setIsUpdating] = useState(false);
+  const isDisputed =
+    fact.votesInteresting + fact.votesMindblowing < fact.votesFalse;
 
   async function handleVote(columnName) {
     setIsUpdating(true);
@@ -283,6 +285,7 @@ function Fact({ fact, setFacts }) {
       <div className="fact-details">
         {/* <p className="date-posted">${formattedDate}</p> */}
         <p>
+          {isDisputed ? <span className="disputed">[DISPUTED] </span> : null}
           {fact.text}
           <a className="source" href={fact.source}>
             (Source)
