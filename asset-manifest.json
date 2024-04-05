@@ -1,15 +1,16 @@
 {
   "files": {
     "main.css": "/today-i-learn/static/css/main.e04e82b1.css",
-    "main.js": "/today-i-learn/static/js/main.02f83650.js",
+    "main.js": "/today-i-learn/static/js/main.f317e0d0.js",
     "static/js/952.bd7795db.chunk.js": "/today-i-learn/static/js/952.bd7795db.chunk.js",
+    "static/media/logo.png": "/today-i-learn/static/media/logo.93be590b485e2b0a79cd.png",
     "index.html": "/today-i-learn/index.html",
     "main.e04e82b1.css.map": "/today-i-learn/static/css/main.e04e82b1.css.map",
-    "main.02f83650.js.map": "/today-i-learn/static/js/main.02f83650.js.map",
+    "main.f317e0d0.js.map": "/today-i-learn/static/js/main.f317e0d0.js.map",
     "952.bd7795db.chunk.js.map": "/today-i-learn/static/js/952.bd7795db.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.e04e82b1.css",
-    "static/js/main.02f83650.js"
+    "static/js/main.f317e0d0.js"
   ]
 }
